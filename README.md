@@ -36,7 +36,7 @@ cellHeightForData方法根据传入的数据来返回Cell的高度,bindData用�
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath
 ```
 然后在视图控制器中创建数据管理类以及代理类和数据源类
-```
+```Objective-C
  - (CCTableDataItem *)dataItem
 {
     if (!_dataItem) {
@@ -67,4 +67,70 @@ cellHeightForData方法根据传入的数据来返回Cell的高度,bindData用�
 
 
 
-并将数据源和代理分别设置
+并将数据源和代理分别设置给TableView,并让TableView注册Cell,此方案提供了新的类别方法用来快速的注册Cell
+```Objective-C
+self.tableView.delegate = self.ccDelegate;
+self.tableView.dataSource = self.ccDataSource;
+
+[self.tableView registerNibCellClasses:@[[ExampleCell class],
+                                         [ExampleDynamicHeightCell class]]];
+
+```
+
+
+CCTableViewDelegate是可高度定制的,分别针对所有的代理方法提供了block来进行控制,例如:
+```Objective-C
+ [self.ccDelegate setDidSelectRowAtIndexPath:^(UITableView *tableView, NSIndexPath *indexPath, id rowData, NSString *cellClassName) {
+        
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+        if ([rowData isKindOfClass:[ExampleCellItem class]]) {
+            ExampleCellItem *cellItem = (ExampleCellItem *)rowData;
+            NSLog(@"该单元格对应的数据源标题为:%@\n对应的按钮标题为:%@",cellItem.titleString,cellItem.buttonString);
+        }else if ([rowData isKindOfClass:[ExampleDynamicHeightCellItem class]])
+        {
+            ExampleDynamicHeightCellItem *dynamicCellItem = (ExampleDynamicHeightCellItem *)rowData;
+            NSLog(@"点击的是动态高度单元格,该单元格对应的数据源内容为:\n%@",dynamicCellItem.dataString);
+        }
+    }];
+```
+最后可以来进行数据的绑定了,将数据和相关的Cell绑定在一起
+```Objective-C
+- (void)bindData
+{
+    [self.dataItem clearData];
+    
+    //创建无代理的区头区尾
+    [self.dataItem addHeaderNibClass:[ExampleHeaderView class]
+                      headerDataItem:[self.dataManager exampleHeaderData]
+                      footerNibClass:[ExampleFooterView class]
+                      footerDataItem:[self.dataManager exampleFooterData]];
+    
+    [self.dataItem addCellClass:[ExampleCell class] dataItem:[self.dataManager exampleCellData]];
+    
+    //创建有代理的区头区尾
+    [self.dataItem addHeaderNibClass:[ExampleHeaderView class]
+                      headerDataItem:[self.dataManager exampleHeaderDataWithDelegate]
+                      headerDelegate:self footerNibClass:[ExampleFooterView class]
+                      footerDataItem:[self.dataManager exampleFooterDataWithDelegate]
+                      footerDelegate:self];
+    
+    [self.dataItem addCellClass:[ExampleCell class] dataItems:[self.dataManager exampleCellDatasWithDelegate] delegate:self];
+    
+    //创建动态高度区
+    [self.dataItem addHeaderNibClass:[ExampleHeaderView class]
+                      headerDataItem:[self.dataManager exampleDynamicHeaderData]
+                      footerNibClass:[ExampleFooterView class]
+                      footerDataItem:[self.dataManager exampleDynamicFooterData]];
+    
+    [self.dataItem addCellClass:[ExampleDynamicHeightCell class] dataItems:[self.dataManager exampleDynamicDatas]];
+    
+    [self.tableView reloadData];
+}
+
+```
+
+
+###大功告成
+
+当你使用这种方案,封装好了一个通用的Cell和headerView,FooterView以后,你会发现你开发一个页面会变得非常高效
