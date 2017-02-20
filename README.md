@@ -1,6 +1,6 @@
 # CCTableDataSourceDemo
 ###UITableView数据源和代理封装,极大的提高开发效率
-
+如果对您有所帮助,请赐予我一颗小小的星星
 ###介绍
   将UITableView的数据源和代理分别封装为CCTableViewDataSource和CCTableViewDelegate,分别依赖于数据管理类CCTableDataItem
   CCTableDataItem类以流的方式载入布局的信息,代码方面更加直观,写法也更加方便
