@@ -11,7 +11,7 @@
 + (CGFloat)cellHeightForData:(id)data;
 - (void)bindData:(id)data;
 ```
- 同时,只需要继承CCBaseTableViewCell还提供了动态计算Cell高度的方法,使用方法如下:
+ 同时,CCBaseTableViewCell还提供了动态计算Cell高度的方法,使用方法如下:
  ```Objective-C
  @implementation ExampleDynamicHeightCell
  static ExampleDynamicHeightCell *staticCell = nil;
