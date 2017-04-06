@@ -1,11 +1,11 @@
 # CCTableDataSourceDemo
-###UITableView数据源和代理封装,极大的提高开发效率
+### UITableView数据源和代理封装,极大的提高开发效率
 如果对您有所帮助,请赐予我一颗小小的星星
-###介绍
+### 介绍
   将UITableView的数据源和代理分别封装为CCTableViewDataSource和CCTableViewDelegate,分别依赖于数据管理类CCTableDataItem
   CCTableDataItem类以流的方式载入布局的信息,代码方面更加直观,写法也更加方便
   
-###使用方法
+### 使用方法
   源码中有很详细的注释,使用起来也很快,核心思想是讲数据的显示和高度的计算交给Cell,HeaderView,FooterView来做,以Cell为例,只需要继承CCBaseTableViewCell,并且重写
 ```Objective-C
 + (CGFloat)cellHeightForData:(id)data;
@@ -131,6 +131,6 @@ CCTableViewDelegate是可高度定制的,分别针对所有的代理方法提供
 ```
 
 
-###大功告成
+### 大功告成
 
 当你使用这种方案,封装好了一个通用的Cell和headerView,FooterView以后,你会发现你开发一个页面会变得非常高效
