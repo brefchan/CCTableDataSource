@@ -18,7 +18,11 @@
  
  + (CGFloat)cellHeightForData:(id)data
 {
-    return [self dynamicCellHeightForStaticCell:staticCell data:data cellClass:[ExampleDynamicHeightCell class] tableViewWidth:CGRectGetWidth([UIScreen mainScreen].bounds) fromXib:YES];
+    return [self dynamicCellHeightForStaticCell:staticCell
+                                           data:data
+                                      cellClass:[ExampleDynamicHeightCell class] 
+                                 tableViewWidth:CGRectGetWidth([UIScreen mainScreen].bounds) 
+                                        fromXib:YES];
 }
  
  @end
